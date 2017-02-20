@@ -27,33 +27,15 @@ contains() { test "${1#*$2}" != "$1" && return 0 || return 1; }
 
 # dump boot and extract ramdisk
 dump_boot() {
-  if [ -f "$bin/nanddump" ]; then
-    $bin/nanddump -f /tmp/anykernel/boot.img $block;
-  else
-    dd if=$block of=/tmp/anykernel/boot.img;
-  fi;
-  if [ -f "$bin/unpackelf" ]; then
-    $bin/unpackelf -i /tmp/anykernel/boot.img -o $split_img;
-    mv -f $split_img/boot.img-ramdisk.cpio.gz $split_img/boot.img-ramdisk.gz;
-  else
-    $bin/unpackbootimg -i /tmp/anykernel/boot.img -o $split_img;
-  fi;
+	
+  dd if=$block of=/tmp/anykernel/boot.img;
+  
+  $bin/unpackbootimg -i /tmp/anykernel/boot.img -o $split_img;
+  
   if [ $? != 0 ]; then
     ui_print " "; ui_print "Dumping/splitting image failed. Aborting..."; exit 1;
   fi;
-  if [ -f "$bin/mkmtkhdr" ]; then
-    dd bs=512 skip=1 conv=notrunc if=$split_img/boot.img-ramdisk.gz of=$split_img/temprd;
-    mv -f $split_img/temprd $split_img/boot.img-ramdisk.gz;
-  fi;
-  if [ -f "$bin/unpackelf" -a -f "$split_img/boot.img-dtb" ]; then
-    case $(od -ta -An -N4 $split_img/boot.img-dtb | sed -e 's/del //' -e 's/   //g') in
-      QCDT|ELF) ;;
-      *) gzip $split_img/boot.img-zImage;
-         mv -f $split_img/boot.img-zImage.gz $split_img/boot.img-zImage;
-         cat $split_img/boot.img-dtb >> $split_img/boot.img-zImage;
-         rm -f $split_img/boot.img-dtb;;
-    esac;
-  fi;
+
   mv -f $ramdisk /tmp/anykernel/rdtmp;
   mkdir -p $ramdisk;
   cd $ramdisk;
@@ -138,13 +120,10 @@ write_boot() {
       ui_print " "; ui_print "User script execution failed. Aborting..."; exit 1;
     fi;
   fi;
-  if [ -f "$bin/flash_erase" -a -f "$bin/nandwrite" ]; then
-    $bin/flash_erase $block 0 0;
-    $bin/nandwrite -p $block /tmp/anykernel/boot-new.img;
-  else
-    dd if=/dev/zero of=$block;
-    dd if=/tmp/anykernel/boot-new.img of=$block;
-  fi;
+  if [ $add_seandroidenforce == "1" ]; then
+	  echo -n "SEANDROIDENFORCE" >> /tmp/anykernel/boot-new.img
+  fi
+  dd if=/tmp/anykernel/boot-new.img of=$block;
 }
 
 # backup_file <file>

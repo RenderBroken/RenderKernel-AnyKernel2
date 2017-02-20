@@ -36,9 +36,14 @@ fi;
 chmod -R 755 /tmp/anykernel/tools /tmp/anykernel/bin;
 bb=/tmp/anykernel/tools/busybox;
 
-ui_print "$(file_getprop /tmp/anykernel/anykernel.sh kernel.string)";
+ui_print " ";
+ui_print " ";
+ui_print "     Render Kernel for the OP3!";
+ui_print " ";
+ui_print " ";
 ui_print " ";
 ui_print "AnyKernel2 by osm0sis @ xda-developers";
+ui_print " ";
 ui_print " ";
 umount /system;
 mount -o ro -t auto /system;
@@ -85,6 +90,7 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.modules)" == 1 ]; then
   ui_print " ";
   ui_print "Pushing modules...";
   mount -o rw,remount -t auto /system;
+  rm -rf $root/system/lib/modules/*;
   cp -rf /tmp/anykernel/modules/* $root/system/lib/modules/;
   set_perm_recursive 0 0 0755 0644 $root/system/lib/modules;
   mount -o ro,remount -t auto /system;
