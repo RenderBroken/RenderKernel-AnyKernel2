@@ -96,6 +96,17 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.modules)" == 1 ]; then
   mount -o ro,remount -t auto /system;
 fi;
 
+if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.system_blobs)" == 1 ]; then
+  ui_print "* Pushing System Blobs...";
+  ui_print " ";
+  mount -o remount,rw -t auto /system;
+  cp -rf /tmp/anykernel/system/lib/libcutils.so /system/lib/libcutils.so;
+  cp -rf /tmp/anykernel/system/lib64/libcutils.so /system/lib64/libcutils.so;
+  set_perm_recursive 0 0 0755 0755 /system/lib;
+  set_perm_recursive 0 0 0755 0755 /system/lib64;
+  mount -o remount,ro -t auto /system;		
+fi;
+
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.cleanup)" == 1 ]; then
   rm -rf /tmp/anykernel;
 fi;

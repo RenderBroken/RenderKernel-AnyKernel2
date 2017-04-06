@@ -30,7 +30,7 @@ on init
     chmod 0664 /dev/stune/foreground/tasks
     chmod 0664 /dev/stune/background/tasks
     chmod 0664 /dev/stune/top-app/tasks
-        
+
 # Make sure CPUSET is set right
     mkdir /dev/cpuset
     mount cpuset none /dev/cpuset
@@ -92,12 +92,10 @@ on boot
     chown system system /dev/cpuset/camera-daemon
     chown system system /dev/cpuset/camera-daemon/tasks
     chmod 0664 /dev/cpuset/camera-daemon/tasks
-    # set default schedTune value for foreground/top-app (only affects EAS)
-    #write /dev/stune/schedtune.prefer_idle 1
+#    # set default schedTune value for foreground/top-app (only affects EAS)
     write /dev/stune/foreground/schedtune.prefer_idle 1
-    write /dev/stune/background/schedtune.prefer_idle 1
     write /dev/stune/top-app/schedtune.prefer_idle 1
-    write /dev/stune/top-app/schedtune.boost 5
+    write /dev/stune/top-app/schedtune.boost 0
 
     # Enable sched boost
     write /proc/sys/kernel/sched_boost 1
@@ -161,10 +159,10 @@ on enable-low-power
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "schedutil"
     
-    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 500
-    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 3000
-    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/up_rate_limit_us 500
-    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/down_rate_limit_us 4000
+#    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 500
+#    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 3000
+#    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/up_rate_limit_us 600
+#    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/down_rate_limit_us 2000
 
 # Re-enable thermal and BCL hotplug
     write /sys/module/msm_thermal/core_control/enabled 1
@@ -174,7 +172,8 @@ on enable-low-power
     write /sys/devices/soc/soc:qcom,bcl/mode "enable"
 
 # Input boost configuration
-    write /sys/module/cpu_boost/parameters/input_boost_freq "0:960000 2:1248000"
+    write /sys/module/cpu_boost/parameters/input_boost_enabled 0
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1113600 2:1113600"
     write /sys/module/cpu_boost/parameters/input_boost_ms 1500
 
 # Setting b.L scheduler parameters
@@ -213,6 +212,7 @@ on enable-low-power
 
 # Set perfd properties
     setprop sys.post_boot.parsed 1
+	start perfd
 
 # Starting io prefetcher service
     start iop
