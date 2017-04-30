@@ -100,11 +100,16 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.system_blobs)" == 1 ]; then
   ui_print "* Pushing System Blobs...";
   ui_print " ";
   mount -o remount,rw -t auto /system;
-  cp -rf /tmp/anykernel/system/lib/libcutils.so /system/lib/libcutils.so;
-  cp -rf /tmp/anykernel/system/lib64/libcutils.so /system/lib64/libcutils.so;
+  cp -rf /tmp/anykernel/system/etc/init.qcom.post_boot.sh /system/etc/init.qcom.post_boot.sh;
+  cp -rf /tmp/anykernel/system/lib/* /system/lib/;
+  cp -rf /tmp/anykernel/system/lib/hw/* /system/lib/hw/;
+  cp -rf /tmp/anykernel/system/lib64/* /system/lib64/;
+  cp -rf /tmp/anykernel/system/lib64/hw/* /system/lib64/hw/;
   set_perm_recursive 0 0 0755 0755 /system/lib;
+  set_perm_recursive 0 0 0755 0755 /system/lib/hw;
   set_perm_recursive 0 0 0755 0755 /system/lib64;
-  mount -o remount,ro -t auto /system;		
+  set_perm_recursive 0 0 0755 0755 /system/lib64/hw;
+  mount -o remount,ro -t auto /system;
 fi;
 
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.cleanup)" == 1 ]; then

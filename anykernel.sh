@@ -6,8 +6,8 @@
 kernel.string=Render Kernel by RenderBroken!
 do.devicecheck=0
 do.initd=0
-do.modules=0
-do.system_blobs=0
+do.modules=1
+do.system_blobs=1
 do.cleanup=1
 device.name1=
 device.name2=
@@ -17,7 +17,7 @@ device.name5=
 
 # shell variables
 block=/dev/block/bootdevice/by-name/boot;
-add_seandroidenforce=0
+add_seandroidenforce=0;
 is_slot_device=0;
 
 ## AnyKernel methods (DO NOT CHANGE)
@@ -26,7 +26,7 @@ is_slot_device=0;
 
 ## AnyKernel permissions
 # set permissions for included ramdisk files
-chmod -R 755 $ramdisk
+chmod -R 755 $ramdisk;
 
 ## AnyKernel install
 dump_boot;
@@ -34,7 +34,7 @@ dump_boot;
 # begin ramdisk changes
 
 ### DEBUGGING ONLY!!!! ###
-# backup_file default.prop
+# backup_file default.prop;
 # replace_line default.prop "ro.debuggable=0" "ro.debuggable=1";
 # replace_line default.prop "ro.adb.secure=1" "ro.adb.secure=0";
 # replace_line default.prop "ro.secure=1" "ro.secure=0";
@@ -42,6 +42,7 @@ dump_boot;
 
 # init.rc
 backup_file init.rc
+insert_line init.rc "init.qcom.power.rc" after "import /init.environ.rc" "import /init.qcom.power.rc\n";
 remove_line init.rc "    mkdir /dev/stune/system-background"
 remove_line init.rc "    chown system system /dev/stune/system-background"
 remove_line init.rc "    chown system system /dev/stune/system-background/tasks"
