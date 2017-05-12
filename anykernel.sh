@@ -59,9 +59,9 @@ remove_line init.rc "    chmod 0664 /dev/cpuset/system-background/tasks"
 backup_file init.qcom.rc
 remove_line init.qcom.rc "    start perfd"
 
-# init.qcom.power.rc
-backup_file init.qcom.power.rc;
-replace_file init.qcom.power.rc 0755 init.qcom.power.rc;
+remove_section init.qcom.rc "service qcom-post-boot" "oneshot"
+
+
 
 # end ramdisk changes
 
