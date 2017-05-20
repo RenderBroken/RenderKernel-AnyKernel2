@@ -73,9 +73,6 @@ on init
     chmod 0664 /dev/cpuset/system-background/tasks
     chmod 0664 /dev/cpuset/top-app/tasks
     chmod 0664 /dev/cpuset/tasks
-    
-# Create Power HAL tunables
-    mkdir /dev/voxpopuli 0555 system system
 
 
 on boot
@@ -99,38 +96,7 @@ on boot
     write /dev/stune/foreground/schedtune.prefer_idle 1
     write /dev/stune/top-app/schedtune.prefer_idle 1
     write /dev/stune/top-app/schedtune.boost 0
-
-# Set Power HAL tunables
-    write /dev/voxpopuli/enable_interaction_boost   1
-    write /dev/voxpopuli/fling_min_boost_duration   1000
-    write /dev/voxpopuli/fling_max_boost_duration   2500
-    write /dev/voxpopuli/fling_boost_topapp         15
-    write /dev/voxpopuli/fling_min_freq_big         1113
-    write /dev/voxpopuli/fling_min_freq_little      1113
-    write /dev/voxpopuli/touch_boost_duration       750
-    write /dev/voxpopuli/touch_boost_topapp         10
-    write /dev/voxpopuli/touch_min_freq_big         1113
-    write /dev/voxpopuli/touch_min_freq_little      1113
-    chmod 0644 /dev/voxpopuli/enable_interaction_boost
-    chmod 0644 /dev/voxpopuli/fling_min_boost_duration
-    chmod 0644 /dev/voxpopuli/fling_max_boost_duration
-    chmod 0644 /dev/voxpopuli/fling_boost_topapp      
-    chmod 0644 /dev/voxpopuli/fling_min_freq_big      
-    chmod 0644 /dev/voxpopuli/fling_min_freq_little   
-    chmod 0644 /dev/voxpopuli/touch_boost_duration    
-    chmod 0644 /dev/voxpopuli/touch_boost_topapp      
-    chmod 0644 /dev/voxpopuli/touch_min_freq_big      
-    chmod 0644 /dev/voxpopuli/touch_min_freq_little   
-    chown system system /dev/voxpopuli/enable_interaction_boost
-    chown system system /dev/voxpopuli/fling_min_boost_duration
-    chown system system /dev/voxpopuli/fling_max_boost_duration
-    chown system system /dev/voxpopuli/fling_boost_topapp      
-    chown system system /dev/voxpopuli/fling_min_freq_big      
-    chown system system /dev/voxpopuli/fling_min_freq_little   
-    chown system system /dev/voxpopuli/touch_boost_duration    
-    chown system system /dev/voxpopuli/touch_boost_topapp      
-    chown system system /dev/voxpopuli/touch_min_freq_big      
-    chown system system /dev/voxpopuli/touch_min_freq_little
+    
     
 on charger
     write /sys/devices/system/cpu/cpu1/online 0
@@ -234,15 +200,19 @@ on property:sys.boot_completed=1
 	write /proc/sys/vm/vfs_cache_pressure 100
 
 # Scheduler and Read Ahead
-	write /sys/block/dm-0/queue/scheduler cfq
-	write /sys/block/sda/queue/scheduler cfq
-	write /sys/block/sde/queue/scheduler cfq
+	write /sys/block/dm-0/queue/scheduler bfq
+	write /sys/block/sda/queue/scheduler bfq
+	write /sys/block/sde/queue/scheduler bfq
 	write /sys/block/dm-0/queue/read_ahead_kb 512
 	write /sys/block/sda/queue/read_ahead_kb 512
 	write /sys/block/sde/queue/read_ahead_kb 512
 	write /sys/block/dm-0/queue/rq_affinity 0
 	write /sys/block/sda/queue/rq_affinity 0
 	write /sys/block/sde/queue/rq_affinity 0
+	write /sys/block/dm-0/queue/iosched/slice_idle 0
+	write /sys/block/sda/queue/iosched/slice_idle 0
+	write /sys/block/sde/queue/iosched/slice_idle 0
+	
 	
 # MISC
 	write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
