@@ -1,4 +1,4 @@
-#!/system/bin/sh
+1#!/system/bin/sh
 
 SULIBS="/su/lib:/system/lib64:/system/lib"
 
@@ -20,3 +20,6 @@ do
 	"allow shell dalvikcache_data_file dir write" \
 	"allow perfd system_server file write"
 done
+
+
+echo "[Render-Kernel] SEPolicy Injected" | tee /dev/kmsg
