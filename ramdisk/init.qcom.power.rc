@@ -174,13 +174,6 @@ on property:sys.boot_completed=1
     write /sys/class/devfreq/soc:qcom,memlat-cpu2/polling_interval 10
     write /sys/class/devfreq/soc:qcom,mincpubw/governor "cpufreq"
 
-# Set perfd properties
-    setprop sys.post_boot.parsed 1
-	stop perfd
-
-# Starting io prefetcher service
-    start iop
-
 # VM tuning
 	write /proc/sys/vm/dirty_background_ratio 20
 	write /proc/sys/vm/dirty_expire_centisecs 200
@@ -221,4 +214,11 @@ on property:sys.boot_completed=1
     exec u:r:init:s0 root root -- /init.special_power.sh
     exec u:r:supersu:s0 root root -- /init.supolicy.sh
     exec u:r:supersu:s0 root root -- /init.special_power.sh
+    
+# Set perfd properties
+    setprop sys.post_boot.parsed 1
+	start perfd
+
+# Starting io prefetcher service
+    start iop
   
