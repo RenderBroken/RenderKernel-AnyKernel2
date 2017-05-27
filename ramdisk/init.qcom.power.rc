@@ -213,13 +213,6 @@ on enable-low-power
     write /sys/class/devfreq/soc:qcom,memlat-cpu2/polling_interval 10
     write /sys/class/devfreq/soc:qcom,mincpubw/governor "cpufreq"
 
-# Set perfd properties
-    setprop sys.post_boot.parsed 1
-	start perfd
-
-# Starting io prefetcher service
-    start iop
-
 # VM tuning
 	write /proc/sys/vm/dirty_background_ratio 20
 	write /proc/sys/vm/dirty_expire_centisecs 200
@@ -249,6 +242,14 @@ on enable-low-power
 	write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
 	write /sys/module/lpm_levels/parameters/sleep_disabled "N"
 	write /sys/module/msm_performance/parameters/touchboost 0
+	write /sys/sweep2sleep/sweep2sleep 0
+
+# Set perfd properties
+    setprop sys.post_boot.parsed 1
+	start perfd
+
+# Starting io prefetcher service
+    start iop
 
 on charger
     write /sys/devices/system/cpu/cpu1/online 0
