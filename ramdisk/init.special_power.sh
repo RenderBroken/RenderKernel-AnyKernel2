@@ -29,8 +29,23 @@ function writepid_top_app() {
 
 sleep 10
 
-write /sys/module/cpu_boost/parameters/input_boost_freq "0:1228800 2:883200"
-write /sys/module/cpu_boost/parameters/input_boost_duration 150
+project=`getprop ro.boot.project_name`
+
+case "$project" in
+    "15811")
+		# input boost configuration
+		echo "0:1132800 2:1132800" > /sys/module/cpu_boost/parameters/input_boost_freq
+		echo 1500 > /sys/module/cpu_boost/parameters/input_boost_ms
+    ;;
+esac
+
+case "$project" in
+    "15801")
+		# input boost configuration
+		echo "0:1113600 2:1113600" > /sys/module/cpu_boost/parameters/input_boost_freq
+		echo 1500 > /sys/module/cpu_boost/parameters/input_boost_ms
+    ;;
+esac
 
 sleep 20
 
