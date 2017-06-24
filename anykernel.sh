@@ -57,7 +57,7 @@ remove_line init.rc "    chmod 0664 /dev/cpuset/system-background/tasks"
 
 # init.qcom.rc
 backup_file init.qcom.rc
-remove_line init.qcom.rc "    start perfd"
+#remove_line init.qcom.rc "    start perfd"
 
 remove_section init.qcom.rc "service qcom-post-boot" "oneshot"
 
