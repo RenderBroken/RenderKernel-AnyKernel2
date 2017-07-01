@@ -17,7 +17,7 @@ device.name5=
 
 # shell variables
 block=/dev/block/bootdevice/by-name/boot;
-add_seandroidenforce=0;
+add_seandroidenforce=0
 is_slot_device=0;
 
 ## AnyKernel methods (DO NOT CHANGE)
@@ -33,35 +33,15 @@ dump_boot;
 
 # begin ramdisk changes
 
-### DEBUGGING ONLY!!!! ###
-# backup_file default.prop;
-# replace_line default.prop "ro.debuggable=0" "ro.debuggable=1";
-# replace_line default.prop "ro.adb.secure=1" "ro.adb.secure=0";
-# replace_line default.prop "ro.secure=1" "ro.secure=0";
-### DEBUGGING ONLY!!!! ###
-
 # init.rc
 backup_file init.rc
 insert_line init.rc "init.qcom.power.rc" after "import /init.environ.rc" "import /init.qcom.power.rc\n";
-remove_line init.rc "    mkdir /dev/stune/system-background"
-remove_line init.rc "    chown system system /dev/stune/system-background"
-remove_line init.rc "    chown system system /dev/stune/system-background/tasks"
-remove_line init.rc "    chmod 0664 /dev/stune/system-background/tasks"
-remove_line init.rc "    mkdir /dev/cpuset/system-background"
-remove_line init.rc "    write /dev/cpuset/system-background/cpus 0"
-remove_line init.rc "    write /dev/cpuset/system-background/mems 0"
-remove_line init.rc "    chown system system /dev/cpuset/system-background"
-remove_line init.rc "    chown system system /dev/cpuset/system-background/tasks"
-remove_line init.rc "    chmod 0775 /dev/cpuset/system-background"
-remove_line init.rc "    chmod 0664 /dev/cpuset/system-background/tasks"
 
 # init.qcom.rc
 backup_file init.qcom.rc
 #remove_line init.qcom.rc "    start perfd"
 
 remove_section init.qcom.rc "service qcom-post-boot" "oneshot"
-
-
 
 # end ramdisk changes
 
