@@ -90,7 +90,7 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.modules)" == 1 ]; then
   ui_print " ";
   ui_print "* Pushing modules...";
   mount -o rw,remount -t auto /system;
-  #rm -rf $root/system/lib/modules/*; We are using source WLAN module
+  rm -rf $root/system/lib/modules/*; We are using source WLAN module
   cp -rf /tmp/anykernel/modules/* $root/system/lib/modules/;
   set_perm_recursive 0 0 0755 0644 $root/system/lib/modules;
   mount -o ro,remount -t auto /system;
