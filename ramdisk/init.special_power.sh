@@ -129,7 +129,7 @@ case "$target" in
 	echo N > /sys/module/lpm_levels/system/perf/perf-l2-dynret/idle_enabled
 	echo N > /sys/module/lpm_levels/system/perf/perf-l2-ret/idle_enabled
 	echo N > /sys/module/lpm_levels/parameters/sleep_disabled
-
+	
 	#if [ -f "/defrag_aging.ko" ]; then
 	#	insmod /defrag_aging.ko
 	#else
@@ -144,43 +144,3 @@ case "$target" in
 esac
 
 setprop sys.post_boot.parsed 1
-
-sleep 20
-
-QSEECOMD=`pidof qseecomd`
-THERMAL-ENGINE=`pidof thermal-engine`
-TIME_DAEMON=`pidof time_daemon`
-IMSQMIDAEMON=`pidof imsqmidaemon`
-IMSDATADAEMON=`pidof imsdatadaemon`
-DASHD=`pidof dashd`
-CND=`pidof cnd`
-DPMD=`pidof dpmd`
-RMT_STORAGE=`pidof rmt_storage`
-TFTP_SERVER=`pidof tftp_server`
-NETMGRD=`pidof netmgrd`
-IPACM=`pidof ipacm`
-QTI=`pidof qti`
-LOC_LAUNCHER=`pidof loc_launcher`
-QSEEPROXYDAEMON=`pidof qseeproxydaemon`
-IFAADAEMON=`pidof ifaadaemon`
-LOGCAT=`pidof logcat`
-LMKD=`pidof lmkd`
-
-writepid_sbg $QSEECOMD
-writepid_sbg $THERMAL-ENGINE
-writepid_sbg $TIME_DAEMON
-writepid_sbg $IMSQMIDAEMON
-writepid_sbg $IMSDATADAEMON
-writepid_sbg $DASHD
-writepid_sbg $CND
-writepid_sbg $DPMD
-writepid_sbg $RMT_STORAGE
-writepid_sbg $TFTP_SERVER
-writepid_sbg $NETMGRD
-writepid_sbg $IPACM
-writepid_sbg $QTI
-writepid_sbg $LOC_LAUNCHER
-writepid_sbg $QSEEPROXYDAEMON
-writepid_sbg $IFAADAEMON
-writepid_sbg $LOGCAT
-writepid_sbg $LMKD
